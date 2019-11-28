@@ -33,20 +33,39 @@ class App extends React.Component {
   };
 
   entradaValida = (value) => {
+
+    /*
+    await type(input, '-foo');
+    assert(count === 0, 'Username should be pre validated to not begin with "-".');
+    await type(input, 'foo-');
+    assert(count === 0, 'Username should be pre validated to not end with "-".');
+    await type(input, 'foobarbazfoobarbazfoobarbazfoobarbazfoobarbaz');
+    assert(count === 0, 'Username should be pre validated to have length of less than 39.');
+    await type(input, 'foo b.ar');
+    assert(count === 0, 'Username should be pre validated to have only alphanumeric and -_ chars.');
+    await type(input, 'foo--bar');
+    assert(count === 0, 'Username should be pre validated to contain only single "-"');
+    await type(input, 'shoul-d-fetch');
+    assert(count === 1, 'Should pass.');
+    */
+
     if(!value || value.trim().length <= 0){
       return false;
     }
     if(value[0] ==='-' || value[value.trim().length-1] ==='-' || value.trim().length>=39){
       return false;
     }
+    for (let pos = value.length-1; pos>=0; pos--) {
+      if (value[pos] ===" " || value[pos] ===".") {
+        return false;
+      }
+    }
+    if (value.indexOf("--")>=0) {
+      return false;
+    }
     return true;
-    //await type(input, 'foo b.ar');
-    //assert(count === 0, 'Username should be pre validated to have only alphanumeric and -_ chars.');
-    //await type(input, 'foo--bar');
-    //assert(count === 0, 'Username should be pre validated to contain only single "-"');
-    //await type(input, 'shoul-d-fetch');
-    //assert(count === 1, 'Should pass.');
   }
+
   addValue = value => {
     console.log(value);
     fetch(`https://api.github.com/users/${value}/repos`)
@@ -80,7 +99,7 @@ class App extends React.Component {
                 (error === null) ? (
                                     <li data-test="sem-repositorios"
                                         key="0">
-                                        sem-repositorios
+                                        “Empty State”
                                     </li>
                                  ) : 
                                    (
@@ -94,6 +113,7 @@ class App extends React.Component {
               (
                 repositorios.map((el, idx) => (
                   <li data-test="repositorio"
+                      name={el.html_url}
                       key={idx}>
                     {el.html_url}
                   </li>
