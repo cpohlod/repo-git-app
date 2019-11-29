@@ -25,6 +25,8 @@ class App extends React.Component {
   add = () => {
     let inputRef = this.state.inputRef;
     if (!this.entradaValida(inputRef.value)){
+      //this.setState({ repositorios: [],
+      //                error:null});
       return;
     }
     this.addValue(inputRef.value);
@@ -63,6 +65,14 @@ class App extends React.Component {
     if (value.indexOf("--")>=0) {
       return false;
     }
+    //if (value.indexOf('-foo')>=0 ||
+    //    value.indexOf('foo-')>=0 ||
+    //    value.indexOf('foobarbazfoobarbazfoobarbazfoobarbazfoobarbaz')>=0 ||
+    //    value.indexOf('foo b.ar')>=0 ||
+    //    value.indexOf('foo--bar')>=0) {
+    //  return false;
+    //}
+
     return true;
   }
 
@@ -113,9 +123,11 @@ class App extends React.Component {
               (
                 repositorios.map((el, idx) => (
                   <li data-test="repositorio"
-                      name={el.html_url}
+                      name={el.name}
+                      created_at={el.created_at}
+                      stargazers_count={el.stargazers_count}
                       key={idx}>
-                    {el.html_url}
+                    {el.name} {el.created_at} {el.stargazers_count}
                   </li>
                 ))
               )
